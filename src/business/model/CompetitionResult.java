@@ -13,17 +13,14 @@ public class CompetitionResult {
     }
 
     public String getGoldMedalist() {
-        // TODO: Implement getGoldMedalist
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.goldMedalist;
     }
 
     public String getSilverMedalist() {
-        // TODO: Implement getSilverMedalist
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.silverMedalist;
     }
 
     public String getBronzeMedalist() {
-        // TODO: Implement getBronzeMedalist
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.bronzeMedalist;
     }
 }
