@@ -17,47 +17,40 @@ public class Delegation {
     }
 
     public String getCode() {
-        // TODO: Implement getCode
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.code;
     }
 
     public String getName() {
-        // TODO: Implement getName
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.name;
     }
 
     public int getGoldMedals() {
-        // TODO: Implement getGoldMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.goldMedals;
     }
 
     public int getSilverMedals() {
-        // TODO: Implement getSilverMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.silverMedals;
     }
 
     public int getBronzeMedals() {
-        // TODO: Implement getBronzeMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.bronzeMedals;
     }
 
     public void addGoldMedals() {
-        // TODO: Implement addGoldMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.goldMedals += 1;
     }
 
     public void addSilverMedals() {
-        // TODO: Implement addSilverMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.silverMedals += 1;
     }
 
     public void addBronzeMedals() {
-        // TODO: Implement addBronzeMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.bronzeMedals += 1;
     }
 
     public void resetMedals() {
-        // TODO: Implement resetMedals
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.goldMedals = 0;
+        this.silverMedals = 0;
+        this.bronzeMedals = 0;
     }
 }
