@@ -33,52 +33,42 @@ public class Athlete {
     }
 
     public String getId() {
-        // TODO: Implement getId
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.id;
     }
 
     public String getName() {
-        // TODO: Implement getName
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.name;
     }
 
     public Date getBirthDate() {
-        // TODO: Implement getBirthDate
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.birthDate;
     }
 
     public String getDelegationCode() {
-        // TODO: Implement getDelegationCode
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.delegationCode;
     }
 
     public AthleteProfile getProfile() {
-        // TODO: Implement getProfile
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.profile;
     }
 
     public int getSpeed() {
-        // TODO: Implement getSpeed
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.speed;
     }
 
     public int getEndurance() {
-        // TODO: Implement getEndurance
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.endurance;
     }
 
     public int getStrength() {
-        // TODO: Implement getStrength
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.strength;
     }
 
     public int getTechnique() {
-        // TODO: Implement getTechnique
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.technique;
     }
 
     public int getPrecision() {
-        // TODO: Implement getPrecision
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.precision;
     }
 }
