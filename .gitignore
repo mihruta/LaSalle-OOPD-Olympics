@@ -28,3 +28,6 @@ replay_pid*
 
 # Compiled output
 out/
+
+# macOS
+.DS_Store
