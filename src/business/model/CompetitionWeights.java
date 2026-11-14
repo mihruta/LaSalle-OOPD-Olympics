@@ -17,32 +17,40 @@ public class CompetitionWeights {
     }
 
     public double getSpeed() {
-        // TODO: Implement getSpeed
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.speed;
     }
 
     public double getEndurance() {
-        // TODO: Implement getEndurance
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.endurance;
     }
 
     public double getStrength() {
-        // TODO: Implement getStrength
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.strength;
     }
 
     public double getTechnique() {
-        // TODO: Implement getTechnique
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.technique;
     }
 
     public double getPrecision() {
-        // TODO: Implement getPrecision
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.precision;
     }
 
     public boolean isValid() {
-        // TODO: Implement isValid
-        throw new UnsupportedOperationException("Not implemented yet");
+        double sum = this.speed + this.endurance + this.strength
+                + this.technique + this.precision;
+
+        double tolerance = 0.000001;
+
+        if (this.speed >= 0.0 && this.speed <= 1.0
+                && this.endurance >= 0.0 && this.endurance <= 1.0
+                && this.strength >= 0.0 && this.strength <= 1.0
+                && this.technique >= 0.0 && this.technique <= 1.0
+                && this.precision >= 0.0 && this.precision <= 1.0
+                && Math.abs(sum - 1.0) < tolerance) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
