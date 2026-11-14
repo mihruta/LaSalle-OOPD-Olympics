@@ -28,47 +28,38 @@ public class Competition {
     }
 
     public String getId() {
-        // TODO: Implement getId
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.id;
     }
 
     public String getName() {
-        // TODO: Implement getName
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.name;
     }
 
     public CompetitionFormat getFormat() {
-        // TODO: Implement getFormat
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.format;
     }
 
     public Date getStartTime() {
-        // TODO: Implement getStartTime
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.startTime;
     }
 
     public CompetitionWeights getWeights() {
-        // TODO: Implement getWeights
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.weights;
     }
 
     public ArrayList<String> getAthleteIds() {
-        // TODO: Implement getAthleteIds
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.athleteIds;
     }
 
     public CompetitionResult getResults() {
-        // TODO: Implement getResults
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.results;
     }
 
     public void setResults(CompetitionResult result) {
-        // TODO: Implement setResults
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.results = result;
     }
 
     public void clearResults() {
-        // TODO: Implement clearResults
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.results = null;
     }
 }
