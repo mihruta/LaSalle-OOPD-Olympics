@@ -2,25 +2,25 @@ package business.model;
 
 public class CompetitionResult {
 
-    private String goldMedalist;
-    private String silverMedalist;
-    private String bronzeMedalist;
+    private final String gold;
+    private final String silver;
+    private final String bronze;
 
-    public CompetitionResult(String goldMedalist, String silverMedalist, String bronzeMedalist) {
-        this.goldMedalist = goldMedalist;
-        this.silverMedalist = silverMedalist;
-        this.bronzeMedalist = bronzeMedalist;
+    public CompetitionResult(String gold, String silver, String bronze) {
+        this.gold = gold;
+        this.silver = silver;
+        this.bronze = bronze;
     }
 
     public String getGoldMedalist() {
-        return this.goldMedalist;
+        return this.gold;
     }
 
     public String getSilverMedalist() {
-        return this.silverMedalist;
+        return this.silver;
     }
 
     public String getBronzeMedalist() {
-        return this.bronzeMedalist;
+        return this.bronze;
     }
 }
