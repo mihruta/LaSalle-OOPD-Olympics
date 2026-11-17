@@ -5,23 +5,23 @@ import java.util.Date;
 
 public class Competition {
 
-    private String id;
-    private String name;
-    private CompetitionFormat format;
-    private Date startTime;
-    private CompetitionWeights weights;
-    private ArrayList<String> athleteIds;
+    private final String id;
+    private final String name;
+    private final CompetitionFormat format;
+    private final Date dateTime;
+    private final CompetitionWeights weights;
+    private final ArrayList<String> athleteIds;
     private CompetitionResult results;
 
     public Competition(
             String id, String name, CompetitionFormat format,
-            Date startTime, CompetitionWeights weights,
+            Date dateTime, CompetitionWeights weights,
             ArrayList<String> athleteIds
     ) {
         this.id = id;
         this.name = name;
         this.format = format;
-        this.startTime = startTime;
+        this.dateTime = dateTime;
         this.weights = weights;
         this.athleteIds = athleteIds;
         this.results = null;
@@ -39,8 +39,8 @@ public class Competition {
         return this.format;
     }
 
-    public Date getStartTime() {
-        return this.startTime;
+    public Date getDateTime() {
+        return this.dateTime;
     }
 
     public CompetitionWeights getWeights() {
