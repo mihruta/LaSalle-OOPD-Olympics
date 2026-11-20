@@ -56,29 +56,6 @@ public class GamesManager {
     }
 
     /**
-     * Simulates all competitions and updates delegation medals.
-     *
-     * @throws DataAccessException if the data cannot be read or saved
-     * @throws InvalidDataException if there are no competitions or the stored data is invalid
-     */
-    public void simulateCompetitions() throws DataAccessException, InvalidDataException {
-
-        ArrayList<Competition> competitions = competitionFileManager.loadCompetitions();
-
-        if (competitions.isEmpty()) {
-            throw new InvalidDataException("There are no competitions to simulate.");
-        }
-
-        resetSimulation();
-
-        SimulationReport report = simulateNextCompetition();
-
-        while (report != null) {
-            report = simulateNextCompetition();
-        }
-    }
-
-    /**
      * Simulates the first competition without saved results.
      *
      * @return the simulation report, or null if no competitions remain to simulate
@@ -178,7 +155,7 @@ public class GamesManager {
                 athleteResults.get(2).getAthlete().getId()
         );
 
-        return new SimulationReport(competition, athleteResults, medalists);
+        return new SimulationReport(athleteResults, medalists);
     }
 
     /**

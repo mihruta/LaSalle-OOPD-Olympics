@@ -14,6 +14,10 @@ import persistence.exceptions.InvalidDataException;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Manages athletes in the Olympic Games.
+ * Handles registration, searching, and deletion.
+ */
 public class AthleteManager {
 
     private final AthleteFileManager athleteFileManager;
@@ -21,6 +25,14 @@ public class AthleteManager {
     private final CompetitionFileManager competitionFileManager;
     private final GamesManager gamesManager;
 
+    /**
+     * Creates an athlete manager with the required file managers.
+     *
+     * @param athleteFileManager the manager for athlete files
+     * @param delegationFileManager the manager for delegation files
+     * @param competitionFileManager the manager for competition files
+     * @param gamesManager the manager for game simulations
+     */
     public AthleteManager(
             AthleteFileManager athleteFileManager, DelegationFileManager delegationFileManager,
             CompetitionFileManager competitionFileManager, GamesManager gamesManager
@@ -31,6 +43,16 @@ public class AthleteManager {
         this.gamesManager = gamesManager;
     }
 
+    /**
+     * Creates a new athlete with a unique ID and random attributes.
+     *
+     * @param name the athlete's name
+     * @param birthDate the athlete's date of birth
+     * @param delegationCode the athlete's delegation code
+     * @param profile the athlete's profile
+     * @throws InvalidDataException if the delegation does not exist or the athlete already exists
+     * @throws DataAccessException if the files cannot be read or saved
+     */
     public void createAthlete(String name, Date birthDate, String delegationCode, AthleteProfile profile)
             throws InvalidDataException, DataAccessException {
 
@@ -61,6 +83,14 @@ public class AthleteManager {
         athleteFileManager.saveAthletes(athletes);
     }
 
+    /**
+     * Searches for athletes by name, ignoring uppercase and lowercase letters.
+     *
+     * @param query the name or part of the name to search for
+     * @return the list of matching athletes
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the athlete file cannot be read
+     */
     public ArrayList<Athlete> searchAthletes(String query)
             throws InvalidDataException, DataAccessException {
 
@@ -76,6 +106,15 @@ public class AthleteManager {
         return result;
     }
 
+    /**
+     * Deletes an athlete by ID.
+     * Also updates competitions and resets results if needed.
+     *
+     * @param id the ID of the athlete to delete
+     * @return true if the athlete was deleted, false if not found
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the files cannot be read or saved
+     */
     public boolean deleteAthlete(String id)
             throws InvalidDataException, DataAccessException {
 
@@ -129,6 +168,15 @@ public class AthleteManager {
         return true;
     }
 
+    /**
+     * Checks if an athlete with the same name exists in a delegation.
+     *
+     * @param name the athlete's name
+     * @param delegationCode the delegation's code
+     * @return true if the athlete already exists, false otherwise
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the athlete file cannot be read
+     */
     private boolean isAthleteDuplicate(String name, String delegationCode)
             throws InvalidDataException, DataAccessException {
 
@@ -144,6 +192,13 @@ public class AthleteManager {
         return false;
     }
 
+    /**
+     * Generates a new athlete ID using the highest existing ID.
+     *
+     * @return the new athlete ID
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the athlete file cannot be read
+     */
     private String generateAthleteId()
             throws InvalidDataException, DataAccessException {
 
@@ -162,6 +217,14 @@ public class AthleteManager {
         return String.format("ATH-%03d", maxId + 1);
     }
 
+    /**
+     * Checks if a delegation with the given code exists.
+     *
+     * @param code the delegation's code
+     * @return true if the delegation exists, false otherwise
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the delegation file cannot be read
+     */
     private boolean isDelegationExist(String code)
             throws InvalidDataException, DataAccessException {
 
@@ -176,6 +239,11 @@ public class AthleteManager {
         return false;
     }
 
+    /**
+     * Generates a random attribute value from 1 to 100.
+     *
+     * @return a random attribute value
+     */
     private int generateRandomAttribute() {
         return (int) (Math.random() * 100) + 1;
     }

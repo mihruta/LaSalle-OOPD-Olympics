@@ -15,19 +15,28 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * Loads and saves delegations in a JSON file.
+ * Checks delegation data when reading the file.
+ */
 public class DelegationFileManager {
 
     private final String fileName;
 
+    /**
+     * Creates a file manager for delegations.json.
+     */
     public DelegationFileManager() {
         this.fileName = "data/delegations.json";
     }
 
-    public boolean isFileValid() {
-        return Files.exists(Path.of(this.fileName));
-    }
-
-
+    /**
+     * Loads delegations from the JSON file and checks their data.
+     *
+     * @return the list of delegations
+     * @throws DataAccessException if the file cannot be read
+     * @throws InvalidDataException if the delegation data is invalid
+     */
     public ArrayList<Delegation> loadDelegations() throws DataAccessException, InvalidDataException {
         try (Reader reader = Files.newBufferedReader(Path.of(this.fileName))) {
             Gson gson = new Gson();
@@ -115,6 +124,12 @@ public class DelegationFileManager {
         }
     }
 
+    /**
+     * Saves the list of delegations to the JSON file.
+     *
+     * @param delegations the delegations to save
+     * @throws DataAccessException if the file cannot be written
+     */
     public void saveDelegations(ArrayList<Delegation> delegations) throws DataAccessException {
         try (Writer writer = Files.newBufferedWriter(Path.of(this.fileName))) {
             Gson gson = new Gson();

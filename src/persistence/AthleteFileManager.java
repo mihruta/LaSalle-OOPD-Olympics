@@ -13,14 +13,29 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * Loads and saves athletes in a JSON file.
+ * Checks the athlete data when reading the file.
+ */
 public class AthleteFileManager {
 
     private final String fileName;
 
+    /**
+     * Creates a file manager for athletes.json.
+     */
     public AthleteFileManager() {
         fileName = "data/athletes.json";
     }
 
+    /**
+     * Loads athletes from the JSON file and checks their data.
+     * Returns an empty list if the file does not exist.
+     *
+     * @return the list of athletes
+     * @throws DataAccessException if the file cannot be read
+     * @throws InvalidDataException if the athlete data is invalid
+     */
     public ArrayList<Athlete> loadAthletes() throws DataAccessException, InvalidDataException {
         if (!Files.exists(Path.of(this.fileName))) {
             return new ArrayList<>();
@@ -98,10 +113,10 @@ public class AthleteFileManager {
                 int precision = athlete.getPrecision();
 
                 if ((speed <= 0 || speed > 100)
-                                || (endurance <= 0 || endurance > 100)
-                                || (strength <= 0 || strength > 100)
-                                || (technique <= 0 || technique > 100)
-                                || (precision <= 0 || precision > 100)) {
+                        || (endurance <= 0 || endurance > 100)
+                        || (strength <= 0 || strength > 100)
+                        || (technique <= 0 || technique > 100)
+                        || (precision <= 0 || precision > 100)) {
                     throw new InvalidDataException("Invalid athlete stats.");
                 }
 
@@ -116,6 +131,12 @@ public class AthleteFileManager {
         }
     }
 
+    /**
+     * Saves the list of athletes to the JSON file.
+     *
+     * @param athletes the athletes to save
+     * @throws DataAccessException if the file cannot be written
+     */
     public void saveAthletes(ArrayList<Athlete> athletes) throws DataAccessException {
         try (Writer writer = Files.newBufferedWriter(Path.of(this.fileName))) {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
