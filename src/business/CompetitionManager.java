@@ -1,6 +1,7 @@
 package business;
 
 import business.model.Competition;
+import business.model.CompetitionImportResult;
 
 import persistence.CompetitionCSVManager;
 import persistence.CompetitionFileManager;
@@ -45,9 +46,15 @@ public class CompetitionManager {
         return competitionFileManager.loadCompetitions();
     }
 
-    public ArrayList<String> importCompetitions(String fileName)
-            throws InvalidDataException, DataAccessException {
-
+    /**
+     * Imports competitions from a CSV file.
+     *
+     * @param fileName the path to the CSV file
+     * @return the result for each processed CSV row
+     * @throws DataAccessException if the data cannot be read or saved
+     * @throws InvalidDataException if the stored data or CSV header is invalid
+     */
+    public ArrayList<CompetitionImportResult> importCompetitions(String fileName) throws InvalidDataException, DataAccessException {
         return competitionCSVManager.importFile(fileName);
     }
 

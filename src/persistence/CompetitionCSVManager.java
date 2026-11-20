@@ -4,11 +4,13 @@ import business.model.Athlete;
 import business.model.Competition;
 import business.model.CompetitionFormat;
 import business.model.CompetitionWeights;
+import business.model.CompetitionImportResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import persistence.exceptions.DataAccessException;
 import persistence.exceptions.InvalidDataException;
@@ -42,76 +44,102 @@ public class CompetitionCSVManager {
     }
 
     /**
-     * Imports valid competitions from a CSV file.
+     * Imports valid competitions and returns the result for each CSV row.
      *
      * @param fileName the path to the CSV file
-     * @return import results and error messages
+     * @return the row results in file order
+     * @throws DataAccessException if the data cannot be read or saved
+     * @throws InvalidDataException if the stored data or CSV header is invalid
      */
-    public ArrayList<String> importFile(String fileName) {
-        ArrayList<String> messages = new ArrayList<>();
-        ArrayList<String> successMessages = new ArrayList<>();
+    public ArrayList<CompetitionImportResult> importFile(String fileName)
+            throws DataAccessException, InvalidDataException {
 
-        try {
-            ArrayList<Athlete> athletes = athleteFileManager.loadAthletes();
-            ArrayList<Competition> competitions = competitionFileManager.loadCompetitions();
+        ArrayList<CompetitionImportResult> results = new ArrayList<>();
 
-            try (BufferedReader reader = Files.newBufferedReader(Path.of(fileName))) {
+        ArrayList<Athlete> athletes =
+                athleteFileManager.loadAthletes();
 
-                validateHeader(reader.readLine());
+        ArrayList<Competition> competitions =
+                competitionFileManager.loadCompetitions();
 
-                String line;
-                int rowNumber = 1;
+        boolean changed = false;
 
-                while ((line = reader.readLine()) != null) {
-                    rowNumber++;
+        try (BufferedReader reader =
+                     Files.newBufferedReader(Path.of(fileName))) {
 
-                    if (line.isBlank()) {
-                        continue;
-                    }
+            validateHeader(reader.readLine());
 
-                    try {
-                        String[] data = parseCSVRow(line);
-                        ArrayList<String> errors = checkRow(data);
+            String line;
+            int lineNumber = 1;
 
-                        if (data.length == 10) {
-                            errors.addAll(
-                                    validateReferences(data, athletes, competitions)
-                            );
-                        }
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
 
-                        if (errors.isEmpty()) {
-                            Competition competition = createCompetition(data);
-                            competitions.add(competition);
+                if (line.isBlank()) {
+                    continue;
+                }
 
-                            successMessages.add(
-                                    "Row " + rowNumber + ": Competition \"" + competition.getId() + "\" loaded successfully."
-                            );
-                        } else {
-                            for (String error : errors) {
-                                messages.add("Row " + rowNumber + ": " + error);
-                            }
-                        }
-                    } catch (InvalidDataException | ParseException e) {
-                        messages.add("Row " + rowNumber + ": " + e.getMessage());
-                    }
+                CompetitionImportResult result = processRow(
+                        line, lineNumber, athletes, competitions
+                );
+
+                results.add(result);
+
+                if (!result.hasErrors()) {
+                    changed = true;
                 }
             }
-
-            if (!successMessages.isEmpty()) {
-                competitionFileManager.saveCompetitions(competitions);
-                messages.addAll(successMessages);
-            } else {
-                messages.add("No competitions were imported.");
-            }
         } catch (IOException | InvalidPathException e) {
-            messages.add(
-                    "Cannot read CSV file \"" + fileName + "\"."
+            throw new DataAccessException(
+                    "Cannot read CSV file \"" + fileName + "\".", e
             );
-        } catch (DataAccessException | InvalidDataException e) {
-            messages.add("Import failed: " + e.getMessage());
         }
 
-        return messages;
+        if (changed) {
+            competitionFileManager.saveCompetitions(competitions);
+        }
+
+        return results;
+    }
+
+    /**
+     * Checks one CSV row and adds a valid competition to the list.
+     *
+     * @param line the CSV row
+     * @param lineNumber the line number in the file
+     * @param athletes the registered athletes
+     * @param competitions the existing and accepted competitions
+     * @return the parsed fields and validation errors
+     */
+    private CompetitionImportResult processRow(
+            String line,
+            int lineNumber,
+            ArrayList<Athlete> athletes,
+            ArrayList<Competition> competitions
+    ) {
+        String[] fields = new String[0];
+        ArrayList<String> errors = new ArrayList<>();
+
+        try {
+            fields = parseCSVRow(line);
+
+            errors.addAll(checkRow(fields));
+
+            if (fields.length == 10) {
+                errors.addAll(validateReferences(fields, athletes, competitions));
+            }
+
+            if (errors.isEmpty()) {
+                Competition competition = createCompetition(fields);
+                competitions.add(competition);
+            }
+        } catch (InvalidDataException | ParseException e) {
+            errors.add(e.getMessage());
+        }
+
+        return new CompetitionImportResult(
+                lineNumber, fields, errors
+        );
     }
 
     /**
@@ -241,7 +269,7 @@ public class CompetitionCSVManager {
             CompetitionFormat.valueOf(data[1]);
         } catch (IllegalArgumentException e) {
             errors.add(
-                    "Invalid competition format \"" + data[1] + "\". Expected TIMED, SCORED or MEASURED."
+                    "Invalid competition format \"" + data[1] + "\"."
             );
         }
 
@@ -253,7 +281,7 @@ public class CompetitionCSVManager {
             parseDateTime(data[3]);
         } catch (ParseException e) {
             errors.add(
-                    "Invalid start date and time \"" + data[3] + "\". Expected yyyy-MM-dd HH:mm."
+                    "Invalid start date and time \"" + data[3] + "\"."
             );
         }
 
@@ -307,7 +335,7 @@ public class CompetitionCSVManager {
         }
 
         if (canCheckSum && Math.abs(totalWeight - 1.0) >= 0.000001) {
-            errors.add("The weights must add up to 1.0.");
+            errors.add(String.format(Locale.ROOT, "The weights add up to %.2f. Their sum must be 1.0.", totalWeight));
         }
 
         return errors;

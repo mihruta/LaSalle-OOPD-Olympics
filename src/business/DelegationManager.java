@@ -21,7 +21,12 @@ public class DelegationManager {
     }
 
     public ArrayList<Delegation> getDelegations() throws InvalidDataException, DataAccessException {
-        return delegationFileManager.loadDelegations();
+
+        ArrayList<Delegation> delegations = delegationFileManager.loadDelegations();
+
+        delegations.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+
+        return delegations;
     }
 
     public Delegation getDelegation(String code) throws InvalidDataException, DataAccessException {
