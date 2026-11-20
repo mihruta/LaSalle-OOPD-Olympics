@@ -10,12 +10,23 @@ import persistence.exceptions.InvalidDataException;
 
 import java.util.ArrayList;
 
+/**
+ * Manages competitions in the Olympic Games.
+ * Handles loading, importing, and deleting competitions.
+ */
 public class CompetitionManager {
 
     private final CompetitionFileManager competitionFileManager;
     private final CompetitionCSVManager competitionCSVManager;
     private final GamesManager gamesManager;
 
+    /**
+     * Creates a competition manager with the required managers.
+     *
+     * @param competitionFileManager the manager for competition files
+     * @param competitionCSVManager the manager for CSV imports
+     * @param gamesManager the manager for game simulations
+     */
     public CompetitionManager(
             CompetitionFileManager competitionFileManager,
             CompetitionCSVManager competitionCSVManager,
@@ -26,6 +37,14 @@ public class CompetitionManager {
         this.gamesManager = gamesManager;
     }
 
+    /**
+     * Finds a competition by its ID.
+     *
+     * @param id the competition's ID
+     * @return the competition, or null if not found
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the competition file cannot be read
+     */
     public Competition getCompetition(String id)
             throws InvalidDataException, DataAccessException {
 
@@ -40,6 +59,13 @@ public class CompetitionManager {
         return null;
     }
 
+    /**
+     * Returns all competitions stored in the system.
+     *
+     * @return the list of competitions
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the competition file cannot be read
+     */
     public ArrayList<Competition> getCompetitions()
             throws InvalidDataException, DataAccessException {
 
@@ -58,6 +84,15 @@ public class CompetitionManager {
         return competitionCSVManager.importFile(fileName);
     }
 
+    /**
+     * Deletes a competition by its ID.
+     * Resets simulation results before removing the competition.
+     *
+     * @param id the ID of the competition to delete
+     * @return true if deleted, false if not found
+     * @throws InvalidDataException if the stored data is invalid
+     * @throws DataAccessException if the files cannot be read or saved
+     */
     public boolean deleteCompetition(String id)
             throws InvalidDataException, DataAccessException {
 

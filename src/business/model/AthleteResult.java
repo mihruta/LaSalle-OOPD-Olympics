@@ -41,7 +41,7 @@ public class AthleteResult {
     }
 
     /**
-     * 	Returns the calculated time.
+     * Returns the calculated time.
      *
      * @return the calculated time
      */

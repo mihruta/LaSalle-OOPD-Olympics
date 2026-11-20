@@ -20,7 +20,25 @@ import presentation.Menu;
 import presentation.SimulationMenu;
 
 /**
- * Initializes and starts the application.
+ * LA28 Games Lab - Olympic Games Simulator
+ *
+ * This project was developed with a lot of effort, dedication,
+ * and teamwork. We worked hard to make the application complete,
+ * well-organized, and easy to understand.
+ *
+ * We also wanted to follow a real team development process.
+ * We planned and divided our work into GitHub issues, assigned
+ * tasks, used separate branches, and reviewed each other's
+ * pull requests before merging our changes.
+ *
+ * Our GitHub repository shows the development process,
+ * including the tasks, contributions, and project history.
+ * We hope it reflects the effort we put into this project.
+ *
+ * GitHub Repository:
+ * https://github.com/mihruta/LaSalle-OOPD-Olympics
+ *
+ * This class initializes and starts the application.
  */
 public class Main {
 

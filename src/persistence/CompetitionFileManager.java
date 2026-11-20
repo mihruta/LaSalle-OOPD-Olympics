@@ -1,6 +1,7 @@
 package persistence;
 
 import business.model.Competition;
+import business.model.CompetitionWeights;
 
 import com.google.gson.*;
 
@@ -17,14 +18,29 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+/**
+ * Loads and saves competitions in a JSON file.
+ * Checks competition data when reading the file.
+ */
 public class CompetitionFileManager {
 
     private final String fileName;
 
+    /**
+     * Creates a file manager for competitions.json.
+     */
     public CompetitionFileManager() {
         fileName = "data/competitions.json";
     }
 
+    /**
+     * Loads competitions from the JSON file and checks their data.
+     * Returns an empty list if the file does not exist.
+     *
+     * @return the list of competitions
+     * @throws DataAccessException if the file cannot be read
+     * @throws InvalidDataException if the competition data is invalid
+     */
     public ArrayList<Competition> loadCompetitions() throws DataAccessException, InvalidDataException {
         if (!Files.exists(Path.of(this.fileName))) {
             return new ArrayList<>();
@@ -73,24 +89,18 @@ public class CompetitionFileManager {
 
                 JsonObject weightsJson = competitionJson.getAsJsonObject("weights");
 
-                double total = 0.0;
-
                 for (String field : new String[]{"speed", "endurance", "strength", "technique", "precision"}) {
                     if (!weightsJson.has(field)
                             || !weightsJson.get(field).isJsonPrimitive()
                             || !weightsJson.get(field).getAsJsonPrimitive().isNumber()) {
                         throw new InvalidDataException("Invalid weight field: " + field);
                     }
-
-                    double weight = weightsJson.get(field).getAsDouble();
-
-                    if (weight < 0.0 || weight > 1.0) {
-                        throw new InvalidDataException("Invalid weight value: " + field);
-                    }
-                    total += weight;
                 }
-                if (Math.abs(total - 1.0) > 0.000001) {
-                    throw new InvalidDataException("Invalid weights sum.");
+
+                CompetitionWeights weights = gson.fromJson(weightsJson, CompetitionWeights.class);
+
+                if (!weights.isValid()) {
+                    throw new InvalidDataException("Invalid competition weights.");
                 }
 
                 if (!competitionJson.has("athleteIds")
@@ -191,6 +201,12 @@ public class CompetitionFileManager {
         }
     }
 
+    /**
+     * Saves the list of competitions to the JSON file.
+     *
+     * @param competitions the competitions to save
+     * @throws DataAccessException if the file cannot be written
+     */
     public void saveCompetitions(ArrayList<Competition> competitions) throws DataAccessException {
         try (Writer writer = Files.newBufferedWriter(Path.of(this.fileName))) {
             Gson gson = new GsonBuilder()
