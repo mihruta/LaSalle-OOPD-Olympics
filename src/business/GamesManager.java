@@ -190,15 +190,14 @@ public class GamesManager {
      * @return the calculated time
      */
     private double calculateTime(Athlete athlete, CompetitionWeights weights, double luck) {
-        double weightedSum = (
-                        (athlete.getSpeed() * weights.getSpeed())
-                        + (athlete.getEndurance() * weights.getEndurance())
-                        + (athlete.getStrength() * weights.getStrength())
-                        + (athlete.getTechnique() * weights.getTechnique())
-                        + (athlete.getPrecision() * weights.getPrecision())
-        );
+        double weightedSum =
+                (athlete.getSpeed() / 100.0) * weights.getSpeed()
+                        + (athlete.getEndurance() / 100.0) * weights.getEndurance()
+                        + (athlete.getStrength() / 100.0) * weights.getStrength()
+                        + (athlete.getTechnique() / 100.0) * weights.getTechnique()
+                        + (athlete.getPrecision() / 100.0) * weights.getPrecision();
 
-        return 1.0 - luck / 10.0 - weightedSum;
+        return 1.0 - luck * weightedSum;
     }
 
     /**
