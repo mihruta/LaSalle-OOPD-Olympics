@@ -29,23 +29,57 @@ The application is designed to provide the following functionality:
 ## 📂 Project Structure
 
 ```text
-src/
-├── business/
-│   ├── model/
-│   └── *Manager.java
-├── persistence/
-│   ├── exceptions/
-│   └── *FileManager.java
-├── presentation/
-└── Main.java
-
-data/
-├── delegations.json
-├── athletes.json
-└── competitions.json
+LaSalle-OOPD-Olympics/
+├── data/
+|   ├── athletes.json
+│   ├── competitions.json
+|   ├── competitions_import_example.csv
+│   └── delegations.json
+│
+├── docs/
+│   ├── astah-uml/
+│   │   ├── *.asta
+│   │   └── *.pdf
+│   └── reports/
+│       └── *.pdf
+│
+├── src/
+│   ├── business/
+│   │   ├── model/
+│   │   ├── AthleteManager.java
+│   │   ├── CompetitionManager.java
+│   │   ├── DelegationManager.java
+│   │   └── GamesManager.java
+│   ├── persistence/
+│   │   ├── exceptions/
+│   │   ├── AthleteFileManager.java
+│   │   ├── CompetitionCSVManager.java
+│   │   ├── CompetitionFileManager.java
+│   │   └── DelegationFileManager.java
+│   ├── presentation/
+│   │   ├── AthleteMenu.java
+│   │   ├── CompetitionMenu.java
+│   │   ├── ConsoleIO.java
+│   │   ├── DelegationMenu.java
+│   │   ├── MedalTableView.java
+│   │   ├── Menu.java
+│   │   └── SimulationMenu.java
+│   └── Main.java
+|
+├── .gitignore
+├── README.md
+└── pom.xml
 ```
 
-The project is organized into business, persistence, and presentation layers.
+The project follows a layered architecture:
+
+- **Business:** Contains the application logic, managers, and data models.
+- **Persistence:** Handles JSON files, CSV imports, and data validation.
+- **Presentation:** Contains the console menus and user interaction.
+- **Data:** Stores delegations, athletes, and competitions.
+- **Docs:** Contains the Astah UML project, UML diagrams, and PDF reports.
+
+The project uses Maven for dependency management and includes Javadoc comments to explain the classes and methods.
 
 ## 🚀 Project Phases
 
