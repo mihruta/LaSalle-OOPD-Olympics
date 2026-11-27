@@ -26,17 +26,6 @@ public class AthleteResult {
     }
 
     /**
-     * Creates a timed result for the existing simulation.
-     *
-     * @param athlete the participating athlete
-     * @param luck    the luck used in the calculation
-     * @param time    the calculated time
-     */
-    public AthleteResult(Athlete athlete, double luck, double time) {
-        this(athlete, time, new double[]{luck}, new double[]{time});
-    }
-
-    /**
      * Returns the participating athlete.
      *
      * @return the participating athlete
@@ -70,23 +59,5 @@ public class AthleteResult {
      */
     public double[] getIndividualResults() {
         return this.individualResults.clone();
-    }
-
-    /**
-     * Returns the luck for the existing timed simulation.
-     *
-     * @return the first random factor
-     */
-    public double getLuck() {
-        return this.randomFactors[0];
-    }
-
-    /**
-     * Returns the time for the existing timed simulation.
-     *
-     * @return the final result
-     */
-    public double getTime() {
-        return this.result;
     }
 }
