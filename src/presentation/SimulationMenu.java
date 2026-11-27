@@ -10,6 +10,7 @@ import business.model.Competition;
 import business.model.CompetitionResult;
 import business.model.Delegation;
 import business.model.SimulationReport;
+import business.model.CompetitionFormat;
 
 import persistence.exceptions.DataAccessException;
 import persistence.exceptions.InvalidDataException;
@@ -91,7 +92,7 @@ public class SimulationMenu {
                     throw new InvalidDataException("The simulation ended before all competitions were processed.");
                 }
 
-                showResults(report);
+                showResults(report, competitions.get(i).getFormat());
 
                 System.out.println();
 
@@ -144,7 +145,6 @@ public class SimulationMenu {
 
         System.out.println();
         System.out.println("Format: " + competition.getFormat());
-        System.out.println("Simulation format: TIMED");
         System.out.println();
         System.out.println("Simulating competition...");
     }
@@ -153,10 +153,12 @@ public class SimulationMenu {
      * Shows participant results and medal winners.
      *
      * @param report the report returned by the games manager
-     * @throws DataAccessException  if the delegations cannot be read
+     * @param format the competition format
+     * @throws DataAccessException if the delegations cannot be read
      * @throws InvalidDataException if a required reference is missing
      */
-    private void showResults(SimulationReport report) throws DataAccessException, InvalidDataException {
+    private void showResults(SimulationReport report, CompetitionFormat format)
+            throws DataAccessException, InvalidDataException {
 
         ArrayList<Delegation> delegations = delegationManager.getDelegations();
         ArrayList<AthleteResult> results = report.getAthleteResults();
@@ -177,11 +179,52 @@ public class SimulationMenu {
             System.out.println();
             System.out.printf("\t%d) %s\n", i + 1, label);
 
-            System.out.printf(Locale.ROOT, "\t   Luck: %.2f%n", result.getLuck());
-            System.out.printf(Locale.ROOT, "\t   Time: %.2f seconds%n", result.getTime());
+            showPerformance(result, format);
         }
 
         showMedalResults(report, delegations);
+    }
+
+    /**
+     * Shows the performance details for the competition format.
+     *
+     * @param result the athlete's simulation result
+     * @param format the competition format
+     */
+    private void showPerformance(AthleteResult result, CompetitionFormat format) {
+        double[] randomFactors = result.getRandomFactors();
+        double[] individualResults = result.getIndividualResults();
+
+        switch (format) {
+            case TIMED -> {
+                System.out.printf(Locale.ROOT, "\t   Luck: %.2f%n", randomFactors[0]);
+                System.out.printf(Locale.ROOT, "\t   Time: %.2f seconds%n", result.getResult());
+            }
+
+            case SCORED -> {
+                for (int i = 0; i < individualResults.length; i++) {
+                    System.out.printf(Locale.ROOT, "\t   Judge %d: factor %.2f | Score: %.2f%n",
+                            i + 1,
+                            randomFactors[i],
+                            individualResults[i]
+                    );
+                }
+
+                System.out.printf(Locale.ROOT, "\t   Final average: %.2f%n", result.getResult());
+            }
+
+            case MEASURED -> {
+                for (int i = 0; i < individualResults.length; i++) {
+                    System.out.printf(Locale.ROOT, "\t   Attempt %d: luck %.2f | Result: %.2f%n",
+                            i + 1,
+                            randomFactors[i],
+                            individualResults[i]
+                    );
+                }
+
+                System.out.printf(Locale.ROOT, "\t   Best result: %.2f%n", result.getResult());
+            }
+        }
     }
 
     /**
